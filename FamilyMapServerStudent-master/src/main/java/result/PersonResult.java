@@ -1,49 +1,63 @@
-package model;
+package result;
 
-public class Person {
+public class PersonResult {
+
+    private String username;
     private String personID;
-    private String associatedUsername;
     private String firstName;
     private String lastName;
     private String gender;
     private String fatherID;
     private String motherID;
     private String spouseID;
+    private boolean success;
 
-    /** constructor containing all possible fields
+    /** constructor containing only required fields
+     * @param username
      * @param personID
-     * @param associatedUsername
+     * @param firstName
+     * @param lastName
+     * @param gender
+     * @param success
+     */
+    public PersonResult(String username, String personID, String firstName, String lastName, String gender, boolean success) {
+        this.username = username;
+        this.personID = personID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.success = success;
+    }
+
+    /** constructor contianing every possible field
+     * @param username
+     * @param personID
      * @param firstName
      * @param lastName
      * @param gender
      * @param fatherID
      * @param motherID
      * @param spouseID
+     * @param success
      */
-    public Person(String personID, String associatedUsername, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID) {
+    public PersonResult(String username, String personID, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID, boolean success) {
+        this.username = username;
         this.personID = personID;
-        this.associatedUsername = associatedUsername;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.fatherID = fatherID;
         this.motherID = motherID;
         this.spouseID = spouseID;
+        this.success = success;
     }
 
-    /** constructor containing only required fields
-     * @param personID
-     * @param associatedUsername
-     * @param firstName
-     * @param lastName
-     * @param gender
-     */
-    public Person(String personID, String associatedUsername, String firstName, String lastName, String gender) {
-        this.personID = personID;
-        this.associatedUsername = associatedUsername;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPersonID() {
@@ -52,14 +66,6 @@ public class Person {
 
     public void setPersonID(String personID) {
         this.personID = personID;
-    }
-
-    public String getAssociatedUsername() {
-        return associatedUsername;
-    }
-
-    public void setAssociatedUsername(String associatedUsername) {
-        this.associatedUsername = associatedUsername;
     }
 
     public String getFirstName() {
@@ -108,5 +114,13 @@ public class Person {
 
     public void setSpouseID(String spouseID) {
         this.spouseID = spouseID;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 }
