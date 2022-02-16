@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.sql.Types;
 
 
 public class EventDAO {
@@ -16,9 +17,29 @@ public class EventDAO {
 
     /** method used to insert an event object into the database table using sql commands as string
      * @param event is the event object to be inserted
-     * @return nothing
      */
     public void insert(Event event) throws DataAccessException {
+        String sqlString = "INSERT INTO Events (EventID, AssociatedUsername, PersonID, Latitude, Longitude, " +
+                "Country, City, EventType, Year) VALUES(?,?,?,?,?,?,?,?,?)";
+
+        try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
+            //Using the statements built-in set(type) functions we can pick the question mark we want
+            //to fill in and give it a proper value. The first argument corresponds to the first
+            //question mark found in our sql String
+            stmt.setString(1, event.getEventID());
+            stmt.setString(2, event.getAssociateUserName());
+            stmt.setString(3, event.getPersonId());
+            stmt.setFloat(4, event.getLatitude());
+            stmt.setFloat(5, event.getLongitude());
+            stmt.setString(6, event.getCountry());
+            stmt.setString(7, event.getCity());
+            stmt.setString(8, event.getEventType());
+            stmt.setInt(9, event.getYear());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException("Error encountered while inserting into the database");
+        }
     }
 
     /** method used to find an event in the database based on event ID.
@@ -27,14 +48,70 @@ public class EventDAO {
      * @return the event matching this eventID
      */
     public Event find(String eventID) throws DataAccessException {
+        Event event;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM Events WHERE EventID = ?;";
+        try (PreparedStatement stmt = accessCon.prepareStatement(sql)) {
+            stmt.setString(1, eventID);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                event = new Event(rs.getString("EventID"), rs.getString("AssociatedUsername"),
+                        rs.getString("PersonID"), rs.getFloat("Latitude"), rs.getFloat("Longitude"),
+                        rs.getString("Country"), rs.getString("City"), rs.getString("EventType"),
+                        rs.getInt("Year"));
+                return event;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding event");
+        } finally {
+            if(rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
         return null;
     }
 
     /** this method removes an event from the database table
      * @param event event to be removed
-     * @return nothing
      */
     public void remove(Event event) throws DataAccessException {
+        String sqlString = "DELETE FROM Events WHERE EventID = " + event.getEventID();
+
+        try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
+            //Using the statements built-in set(type) functions we can pick the question mark we want
+            //to fill in and give it a proper value. The first argument corresponds to the first
+            //question mark found in our sql String
+            stmt.setNull(1, Types.VARCHAR);
+            stmt.setNull(2, Types.VARCHAR);
+            stmt.setNull(3, Types.VARCHAR);
+            stmt.setNull(4, Types.FLOAT);
+            stmt.setNull(5, Types.FLOAT);
+            stmt.setNull(6, Types.VARCHAR);
+            stmt.setNull(7, Types.VARCHAR);
+            stmt.setNull(8, Types.VARCHAR);
+            stmt.setNull(9, Types.INTEGER);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException("Error encountered while removing from the database");
+        }
+    }
+
+    public void clearEvents() throws DataAccessException {
+        String sqlString = "DELETE FROM Event";
+
+        try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
+            stmt.executeUpdate();
+        }
+        catch (SQLException e) {
+            throw new DataAccessException("Error encountered while clearing the event table");
+        }
     }
 
     /** method gets the events in a user's family tree based on their username
@@ -92,6 +169,12 @@ public class EventDAO {
      */
     public List<Event> getEventsByYear(int year) {
         return null;
+    }
+
+    /** clears all events associated with a user
+     * @param username user's username
+     */
+    public void removeEvents(String username) {
     }
 
 }
