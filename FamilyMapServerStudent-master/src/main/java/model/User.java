@@ -1,5 +1,8 @@
 package model;
 
+import dao.UserDAO;
+import java.util.Objects;
+
 public class User {
     private String username;
     private String password;
@@ -73,5 +76,24 @@ public class User {
 
     public String getPersonID() {
         return personID;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (obj.getClass() != User.class) {
+            return false;
+        }
+
+        User uObj = (User) obj;
+        return Objects.equals(username, uObj.username) && Objects.equals(password, uObj.password)
+                && Objects.equals(email, uObj.email) && Objects.equals(firstName, uObj.firstName)
+                && Objects.equals(lastName, uObj.lastName) && Objects.equals(gender, uObj.gender)
+                && Objects.equals(personID, uObj.personID);
     }
 }

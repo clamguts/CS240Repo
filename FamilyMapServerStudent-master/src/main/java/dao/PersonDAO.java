@@ -1,6 +1,5 @@
 package dao;
 
-import model.Event;
 import model.Person;
 
 import java.sql.*;
@@ -16,8 +15,8 @@ public class PersonDAO {
      * @param person is the event object to be inserted
      */
     public void insert(Person person) throws DataAccessException {
-        String sqlString = "INSERT INTO Person (PersonID, AssociatedUsername, FirstName, LastName, Gender, " +
-                "FatherID, MotherID, SpouseID) VALUES(?,?,?,?,?,?,?,?)";
+        String sqlString = "INSERT INTO person (personID, associatedUsername, firstName, lastName, gender, " +
+                "fatherID, motherID, spouseID) VALUES(?,?,?,?,?,?,?,?)";
 
         try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
             //Using the statements built-in set(type) functions we can pick the question mark we want
@@ -53,14 +52,14 @@ public class PersonDAO {
     public Person find(String personID) throws DataAccessException {
         Person person;
         ResultSet rs = null;
-        String sql = "SELECT * FROM Person WHERE PersonID = ?;";
+        String sql = "SELECT * FROM person WHERE personID = ?;";
         try (PreparedStatement stmt = accessCon.prepareStatement(sql)) {
             stmt.setString(1, personID);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                person = new Person(rs.getString("PersonID"), rs.getString("AssociatedUsername"),
-                        rs.getString("FirstName"), rs.getString("LastName"), rs.getString("Gender"),
-                        rs.getString("FatherID"), rs.getString("MotherID"), rs.getString("SpouseID"));
+                person = new Person(rs.getString("personID"), rs.getString("associatedUsername"),
+                        rs.getString("firstName"), rs.getString("lastName"), rs.getString("gender"),
+                        rs.getString("fatherID"), rs.getString("motherID"), rs.getString("spouseID"));
                 return person;
             }
         } catch (SQLException e) {
@@ -83,7 +82,7 @@ public class PersonDAO {
      * @param person person to be removed
      */
     public void remove(Person person) throws DataAccessException {
-        String sqlString = "DELETE FROM Events WHERE PersonID = " + person.getPersonID();
+        String sqlString = "DELETE FROM person WHERE personID = " + person.getPersonID();
 
         try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
             //Using the statements built-in set(type) functions we can pick the question mark we want
@@ -105,7 +104,7 @@ public class PersonDAO {
     }
 
     public void clearPeople() throws DataAccessException {
-        String sqlString = "DELETE FROM Person";
+        String sqlString = "DELETE FROM person";
 
         try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
             stmt.executeUpdate();

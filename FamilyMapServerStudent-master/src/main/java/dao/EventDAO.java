@@ -19,8 +19,8 @@ public class EventDAO {
      * @param event is the event object to be inserted
      */
     public void insert(Event event) throws DataAccessException {
-        String sqlString = "INSERT INTO Events (EventID, AssociatedUsername, PersonID, Latitude, Longitude, " +
-                "Country, City, EventType, Year) VALUES(?,?,?,?,?,?,?,?,?)";
+        String sqlString = "INSERT INTO event (eventID, associatedUsername, personID, latitude, longitude, " +
+                "country, city, eventType, year) VALUES(?,?,?,?,?,?,?,?,?)";
 
         try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
             //Using the statements built-in set(type) functions we can pick the question mark we want
@@ -50,15 +50,15 @@ public class EventDAO {
     public Event find(String eventID) throws DataAccessException {
         Event event;
         ResultSet rs = null;
-        String sql = "SELECT * FROM Events WHERE EventID = ?;";
+        String sql = "SELECT * FROM event WHERE eventID = ?;";
         try (PreparedStatement stmt = accessCon.prepareStatement(sql)) {
             stmt.setString(1, eventID);
             rs = stmt.executeQuery();
             if (rs.next()) {
-                event = new Event(rs.getString("EventID"), rs.getString("AssociatedUsername"),
-                        rs.getString("PersonID"), rs.getFloat("Latitude"), rs.getFloat("Longitude"),
-                        rs.getString("Country"), rs.getString("City"), rs.getString("EventType"),
-                        rs.getInt("Year"));
+                event = new Event(rs.getString("eventID"), rs.getString("associatedUsername"),
+                        rs.getString("personID"), rs.getFloat("latitude"), rs.getFloat("longitude"),
+                        rs.getString("country"), rs.getString("city"), rs.getString("eventType"),
+                        rs.getInt("year"));
                 return event;
             }
         } catch (SQLException e) {
@@ -81,7 +81,7 @@ public class EventDAO {
      * @param event event to be removed
      */
     public void remove(Event event) throws DataAccessException {
-        String sqlString = "DELETE FROM Events WHERE EventID = " + event.getEventID();
+        String sqlString = "DELETE FROM event WHERE eventID = " + event.getEventID();
 
         try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
             //Using the statements built-in set(type) functions we can pick the question mark we want
@@ -104,7 +104,7 @@ public class EventDAO {
     }
 
     public void clearEvents() throws DataAccessException {
-        String sqlString = "DELETE FROM Event";
+        String sqlString = "DELETE FROM event";
 
         try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
             stmt.executeUpdate();

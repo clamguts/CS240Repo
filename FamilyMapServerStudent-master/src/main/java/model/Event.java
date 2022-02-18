@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Event {
     private String eventID;
     private String associateUserName;
@@ -33,6 +35,19 @@ public class Event {
 
     public String getEventID() {
         return eventID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Float.compare(event.latitude, latitude) == 0 && Float.compare(event.longitude, longitude) == 0 && year == event.year && eventID.equals(event.eventID) && associateUserName.equals(event.associateUserName) && personId.equals(event.personId) && country.equals(event.country) && city.equals(event.city) && eventType.equals(event.eventType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eventID, associateUserName, personId, latitude, longitude, country, city, eventType, year);
     }
 
     public void setEventID(String eventID) {

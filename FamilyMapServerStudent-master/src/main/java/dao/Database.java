@@ -14,7 +14,7 @@ public class Database {
         try {
             //The Structure for this Connection is driver:language:path
             //The path assumes you start in the root of your project unless given a non-relative path
-            final String CONNECTION_URL = "jdbc:sqlite:familymap.sqlite";
+            final String CONNECTION_URL = "jdbc:sqlite:famDB.db";
 
             // Open a database connection to the file given in the path
             conn = DriverManager.getConnection(CONNECTION_URL);
@@ -65,9 +65,8 @@ public class Database {
 
     public void clearTables() throws DataAccessException
     {
-
-        try (Statement stmt = conn.createStatement()){
-            String sql = "DELETE FROM Events";
+        try (Statement stmt = conn.createStatement()) {
+            String sql = "DELETE FROM Users";
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             throw new DataAccessException("SQL Error encountered while clearing tables");
