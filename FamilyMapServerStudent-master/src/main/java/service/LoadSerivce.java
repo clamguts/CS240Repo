@@ -1,15 +1,67 @@
 package service;
 
+import dao.*;
+import model.Person;
 import request.LoadRequest;
 import result.LoadResult;
+import model.User;
+import model.Event;
+
+import java.sql.Connection;
 
 public class LoadSerivce {
 
-    /** method cleras data from database and loads specified user, person, and event data from request
+    /** method clears data from database and loads specified user, person, and event data from request
      * @param l request containing info to load
      * @return result of the load
      */
-    LoadResult load(LoadRequest l) {
-        return null;
+    public LoadResult load(LoadRequest l) {
+        Database db = new Database();
+        String respMessage;
+
+        boolean success = false;
+
+        try {
+            Connection connect = db.openConnection();
+            db.clearTables();
+            UserDAO userDAO = new UserDAO(connect);
+            EventDAO eventDAO = new EventDAO(connect);
+            PersonDAO personDAO = new PersonDAO(connect);
+
+            for (User u : l.getUsers()) {
+                userDAO.insert(u);
+            }
+            for (Event e : l.getEvents()) {
+                eventDAO.insert(e);
+            }
+            for (Person p : l.getPersons()) {
+                personDAO.insert(p);
+            }
+
+            Integer personLength = l.getPersons().length;
+            Integer eventLength = l.getEvents().length;
+            Integer userLength = l.getUsers().length;
+
+            respMessage = "Successfully added " + personLength.toString(l.getPersons().length) + " people, " +
+            eventLength.toString(l.getEvents().length) + " events, " + userLength.toString(l.getUsers().length)
+            + " users.";
+            success = true;
+            LoadResult loadR = new LoadResult(respMessage, success);
+            db.closeConnection(true);
+            return loadR;
+        }
+        catch (DataAccessException d) {
+            d.printStackTrace();
+            respMessage = "Error: " + d.getMessage();
+            success = false;
+            try {
+                db.closeConnection(false);
+            } catch (DataAccessException e) {
+                e.printStackTrace();
+            }
+            LoadResult loadR = new LoadResult(respMessage, success);
+            return loadR;
+        }
+
     }
 }

@@ -9,7 +9,7 @@ public class LoadRequest {
     private Person[] persons;
     private Event[] events;
 
-    public LoadRequest(User[] users, Person[] persons, Event[] events) {
+    public LoadRequest(User[] users, Person[] persons /*Event[] events*/) {
         this.users = users;
         this.persons = persons;
         this.events = events;

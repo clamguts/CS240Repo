@@ -95,7 +95,9 @@ public class UserDAO {
 
     public void clearUsers() throws DataAccessException {
         String sqlString = "DELETE FROM user";
-
+        if (accessCon == null) {
+            return;
+        }
         try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
             stmt.executeUpdate();
         }

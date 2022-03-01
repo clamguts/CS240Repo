@@ -84,7 +84,9 @@ public class AuthTokenDAO {
 
     public void clearTokens() throws DataAccessException {
         String sqlString = "DELETE FROM authtoken";
-
+        if (accessCon == null) {
+            return;
+        }
         try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
             stmt.executeUpdate();
         }

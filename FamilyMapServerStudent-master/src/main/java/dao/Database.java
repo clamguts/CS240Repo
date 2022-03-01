@@ -7,6 +7,10 @@ import java.sql.Statement;
 
 public class Database {
     private Connection conn;
+    private UserDAO userDAO = new UserDAO(conn);
+    private EventDAO eventDAO = new EventDAO(conn);
+    private PersonDAO personDAO = new PersonDAO(conn);
+    private AuthTokenDAO authTokenDAO = new AuthTokenDAO(conn);
 
     //Whenever we want to make a change to our database we will have to open a connection and use
     //Statements created by that connection to initiate transactions
@@ -63,14 +67,15 @@ public class Database {
         }
     }
 
+
     public void clearTables() throws DataAccessException
     {
-        try (Statement stmt = conn.createStatement()) {
-            String sql = "DELETE FROM Users";
-            stmt.executeUpdate(sql);
-        } catch (SQLException e) {
-            throw new DataAccessException("SQL Error encountered while clearing tables");
-        }
+        userDAO.clearUsers();
+        eventDAO.clearEvents();
+        authTokenDAO.clearTokens();
+        personDAO.clearPeople();
     }
+
+
 }
 

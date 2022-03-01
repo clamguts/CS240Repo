@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class Event {
     private String eventID;
-    private String associateUserName;
-    private String personId;
+    private String associatedUsername;
+    private String personID;
     private float latitude;
     private float longitude;
     private String country;
@@ -23,8 +23,8 @@ public class Event {
     public Event(String id, String uName, String pId, float lat, float eLong,
                  String eCountry, String eCity, String eType, int eYear) {
         this.eventID = id;
-        this.associateUserName = uName;
-        this.personId = pId;
+        this.associatedUsername = uName;
+        this.personID = pId;
         this.latitude = lat;
         this.longitude = eLong;
         this.country = eCountry;
@@ -42,12 +42,12 @@ public class Event {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return Float.compare(event.latitude, latitude) == 0 && Float.compare(event.longitude, longitude) == 0 && year == event.year && eventID.equals(event.eventID) && associateUserName.equals(event.associateUserName) && personId.equals(event.personId) && country.equals(event.country) && city.equals(event.city) && eventType.equals(event.eventType);
+        return Float.compare(event.latitude, latitude) == 0 && Float.compare(event.longitude, longitude) == 0 && year == event.year && eventID.equals(event.eventID) && associatedUsername.equals(event.associatedUsername) && personID.equals(event.personID) && country.equals(event.country) && city.equals(event.city) && eventType.equals(event.eventType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(eventID, associateUserName, personId, latitude, longitude, country, city, eventType, year);
+        return Objects.hash(eventID, associatedUsername, personID, latitude, longitude, country, city, eventType, year);
     }
 
     public void setEventID(String eventID) {
@@ -55,19 +55,19 @@ public class Event {
     }
 
     public String getAssociateUserName() {
-        return associateUserName;
+        return associatedUsername;
     }
 
     public void setAssociateUserName(String associateUserName) {
-        this.associateUserName = associateUserName;
+        this.associatedUsername = associateUserName;
     }
 
     public String getPersonId() {
-        return personId;
+        return personID;
     }
 
     public void setPersonId(String personId) {
-        this.personId = personId;
+        this.personID = personId;
     }
 
     public float getLatitude() {

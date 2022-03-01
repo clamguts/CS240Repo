@@ -105,7 +105,9 @@ public class PersonDAO {
 
     public void clearPeople() throws DataAccessException {
         String sqlString = "DELETE FROM person";
-
+        if (accessCon == null) {
+            return;
+        }
         try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
             stmt.executeUpdate();
         }
