@@ -12,6 +12,7 @@ public class Person {
     private String motherID;
     private String spouseID;
 
+    public Person() {}
     /** constructor containing all possible fields
      * @param personID
      * @param associatedUsername

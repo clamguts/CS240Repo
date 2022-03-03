@@ -1,8 +1,9 @@
 package service;
 
-import dao.DataAccessException;
+import dao.*;
 import result.ClearResult;
-import dao.Database;
+
+import java.sql.Connection;
 
 public class ClearService {
 
@@ -15,8 +16,15 @@ public class ClearService {
         boolean success = false;
 
         try {
-            db.openConnection();
-            db.clearTables();
+            Connection connection = db.openConnection();
+            UserDAO uDAO = new UserDAO(connection);
+            EventDAO eDAO = new EventDAO(connection);
+            PersonDAO pDAO = new PersonDAO(connection);
+
+            uDAO.clearUsers();
+            eDAO.clearEvents();
+            pDAO.clearPeople();
+
             db.closeConnection(true);
 
             respMessage = "Clear succeeded.";

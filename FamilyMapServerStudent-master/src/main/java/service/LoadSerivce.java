@@ -23,19 +23,22 @@ public class LoadSerivce {
 
         try {
             Connection connect = db.openConnection();
-            db.clearTables();
-            UserDAO userDAO = new UserDAO(connect);
-            EventDAO eventDAO = new EventDAO(connect);
-            PersonDAO personDAO = new PersonDAO(connect);
+            UserDAO uDAO = new UserDAO(connect);
+            EventDAO eDAO = new EventDAO(connect);
+            PersonDAO pDAO = new PersonDAO(connect);
+
+            uDAO.clearUsers();
+            eDAO.clearEvents();
+            pDAO.clearPeople();
 
             for (User u : l.getUsers()) {
-                userDAO.insert(u);
+                uDAO.insert(u);
             }
             for (Event e : l.getEvents()) {
-                eventDAO.insert(e);
+                eDAO.insert(e);
             }
             for (Person p : l.getPersons()) {
-                personDAO.insert(p);
+                pDAO.insert(p);
             }
 
             Integer personLength = l.getPersons().length;

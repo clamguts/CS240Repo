@@ -33,6 +33,13 @@ public class Event {
         this.year = eYear;
     }
 
+    public void setLocation(Location location) {
+        this.latitude = location.getLatitude();
+        this.longitude = location.getLongitude();
+        this.city = location.getCity();
+        this.country = location.getCountry();
+    }
+
     public String getEventID() {
         return eventID;
     }
