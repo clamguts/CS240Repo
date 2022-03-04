@@ -5,11 +5,17 @@ public class RegisterResult {
     private String username;
     private String personID;
     private boolean success;
+    private String message;
 
     public RegisterResult(String authtoken, String username, String personID, boolean success) {
         this.authtoken = authtoken;
         this.username = username;
         this.personID = personID;
+        this.success = success;
+    }
+
+    public RegisterResult(String message, boolean success) {
+        this.message = message;
         this.success = success;
     }
 

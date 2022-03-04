@@ -1,9 +1,9 @@
 package model;
 
-public class LocationArray {
-    private Location[] data;
+public class NamesArray {
+    String[] data;
 
-    public LocationArray(Location[] data) {
+    public NamesArray(String[] data) {
         this.data = data;
     }
 
@@ -11,7 +11,7 @@ public class LocationArray {
         return data.length;
     }
 
-    public Location at(int index) {
+    public String at(int index) {
         return data[index];
     }
 }

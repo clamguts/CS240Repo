@@ -2,9 +2,7 @@ package server;
 import java.io.*;
 import java.net.*;
 import com.sun.net.httpserver.*;
-import handler.FileHandler;
-import handler.LoadHandler;
-import handler.LoginHandler;
+import handler.*;
 
 public class Server {
     private HttpServer server;
@@ -25,8 +23,11 @@ public class Server {
         }
 
         server.createContext("/", new FileHandler());
+        server.createContext("/clear", new ClearHandler());
         server.createContext("/load", new LoadHandler());
         server.createContext("/user/login", new LoginHandler());
+        server.createContext("/fill/[username]/{generations}", new FillHandler());
+        server.createContext("/user/register", new RegisterHandler());
         server.start();
     }
 
