@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import model.NamesArray;
+import java.util.Vector;
 
 public class FamilyTree {
 
@@ -53,33 +54,36 @@ public class FamilyTree {
             return null;
         }
     }
-    public void generateRoot(String userName, int generations, Set<Event> events, Set<Person> people, User rootUser) {
+    public void generateRoot(String userName, int generations, Vector<Event> events, Vector<Person> people, User rootUser) {
         String gender = rootUser.getGender();
         generatePerson(gender, generations, userName, 1700, events, people);
     }
 
-    private Person generatePerson(String gender, int generations, String userName, int year, Set<Event> events, Set<Person> people) {
+    private Person generatePerson(String gender, int generations, String userName, int year, Vector<Event> events, Vector<Person> people) {
 
-        Person mother = null;
-        Person father = null;
+       Person mother = null;
+       Person father = null;
+       Person newPerson = new Person();
 
-        if (generations > 1) {
+        if (generations >= 1) {
             mother = generatePerson("f", generations - 1, userName, year-30, events, people);
             father = generatePerson("m", generations-1, userName, year-30, events, people);
 
             mother.setSpouseID(father.getPersonID());
             father.setSpouseID(mother.getPersonID());
+            newPerson.setMotherID(mother.getPersonID());
+            newPerson.setFatherID(father.getPersonID());
 
             Location marriageLocation = getLocation();
             events.add(createEvent("marriage", mother, year-10, marriageLocation));
             events.add(createEvent("marriage", father, year-10, marriageLocation));
-
+            events.add(createEvent("death", mother, year+55, getLocation()));
+            events.add(createEvent("death", father, year+55, getLocation()));
         }
 
-        Person newPerson = new Person();
         String personID = generateID();
         String firstName = "bob";
-        String lastName = "bob";
+        String lastName;
         int randomIndexfName = 0;
         if (gender.equals("f")) {
             randomIndexfName = randomIndexStringArray(fNames);
@@ -92,25 +96,12 @@ public class FamilyTree {
         int randomIndexlName = randomIndexStringArray(sNames);
         lastName = sNames.at(randomIndexlName);
         newPerson.setAssociatedUsername(userName);
-        if (mother != null) {
-            newPerson.setMotherID(mother.getPersonID());
-        }
-        if (father != null) {
-            newPerson.setFatherID(father.getPersonID());
-        }
         newPerson.setPersonID(personID);
         newPerson.setGender(gender);
         newPerson.setFirstName(firstName);
         newPerson.setLastName(lastName);
-        try {
-            events.add(createEvent("birth", newPerson, year, getLocation()));
-            events.add(createEvent("death", newPerson, year+75, getLocation()));
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        events.add(createEvent("birth", newPerson, year, getLocation()));
         people.add(newPerson);
-
         return newPerson;
     }
 

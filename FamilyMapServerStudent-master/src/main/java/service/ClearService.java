@@ -22,9 +22,9 @@ public class ClearService {
             PersonDAO pDAO = new PersonDAO(connection);
             AuthTokenDAO aDAO = new AuthTokenDAO(connection);
 
-            uDAO.clearUsers();
             eDAO.clearEvents();
             pDAO.clearPeople();
+            uDAO.clearUsers();
             aDAO.clearTokens();
 
             db.closeConnection(true);

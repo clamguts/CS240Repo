@@ -11,11 +11,8 @@ import model.Event;
 import result.LoginResult;
 import model.Location;
 
-import java.util.Random;
+import java.util.*;
 import java.sql.Connection;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.UUID;
 
 public class FillService {
 
@@ -30,8 +27,8 @@ public class FillService {
         FamilyTree newTree = new FamilyTree();
         String message;
         boolean success = false;
-        Set<Event> events = new TreeSet<>();
-        Set<Person> people = new TreeSet<>();
+        Vector<Event> events = new Vector<>();
+        Vector<Person> people = new Vector<>();
         User rootUser = new User();
        Database db = new Database();
        try {

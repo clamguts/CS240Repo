@@ -21,7 +21,6 @@ public class EventDAO {
     public void insert(Event event) throws DataAccessException {
         String sqlString = "INSERT INTO event (eventID, associatedUsername, personID, latitude, longitude, " +
                 "country, city, eventType, year) VALUES(?,?,?,?,?,?,?,?,?)";
-        if (accessCon != null) {
             try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
                 //Using the statements built-in set(type) functions we can pick the question mark we want
                 //to fill in and give it a proper value. The first argument corresponds to the first
@@ -40,7 +39,7 @@ public class EventDAO {
             } catch (SQLException e) {
                 throw new DataAccessException("Error encountered while inserting into the database");
             }
-        }
+
 
     }
 

@@ -27,16 +27,9 @@ public class PersonDAO {
             stmt.setString(3, person.getFirstName());
             stmt.setString(4, person.getLastName());
             stmt.setString(5, person.getGender());
-
-            if (person.getFatherID() != null) {
-                stmt.setString(6, person.getFatherID());
-            }
-            if (person.getMotherID() != null) {
-                stmt.setString(6, person.getMotherID());
-            }
-            if (person.getSpouseID() != null) {
-                stmt.setString(6, person.getSpouseID());
-            }
+            stmt.setString(6, person.getFatherID());
+            stmt.setString(7, person.getMotherID());
+            stmt.setString(8, person.getSpouseID());
 
             stmt.executeUpdate();
         } catch (SQLException e) {

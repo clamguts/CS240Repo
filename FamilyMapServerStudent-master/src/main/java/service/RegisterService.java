@@ -1,8 +1,6 @@
 package service;
 
-import dao.DataAccessException;
-import dao.Database;
-import dao.UserDAO;
+import dao.*;
 import model.Person;
 import request.FillRequest;
 import request.LoginRequest;
@@ -12,7 +10,7 @@ import result.LoginResult;
 import result.RegisterResult;
 import model.User;
 import model.Event;
-import java.util.Set;
+import java.util.Vector;
 
 import java.sql.Connection;
 import java.util.TreeSet;
@@ -57,10 +55,34 @@ public class RegisterService {
         }
 
         FamilyTree familyTree = new FamilyTree();
-        Set<Event> events = new TreeSet<>();
-        Set<Person> people = new TreeSet<>();
+        Vector<Event> events = new Vector<>();
+        Vector<Person> people = new Vector<>();
         familyTree.generateRoot(username, 4, events, people, newUser);
 
+        try {
+            Connection connection = db.openConnection();
+            EventDAO eventDAO = new EventDAO(connection);
+            PersonDAO personDAO = new PersonDAO(connection);
+
+            for (Event e : events) {
+                eventDAO.insert(e);
+            }
+
+            for (Person p : people) {
+                personDAO.insert(p);
+            }
+            db.closeConnection(true);
+        } catch (DataAccessException d) {
+            d.printStackTrace();
+            message = "Error: " + d.getMessage();
+            try {
+                db.closeConnection(false);
+            } catch (DataAccessException e) {
+                e.printStackTrace();
+            }
+            RegisterResult result = new RegisterResult(message, success);
+            return result;
+        }
 
         LoginRequest loginRequest = new LoginRequest(username, password);
         LoginService loginService = new LoginService();
