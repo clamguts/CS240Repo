@@ -11,6 +11,7 @@ import service.FillService;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.util.Vector;
 
 public class FillHandler extends SuperHandler implements HttpHandler {
 
@@ -23,18 +24,22 @@ public class FillHandler extends SuperHandler implements HttpHandler {
                 String userName = "";
                 int generationNum = 0;
                 int numSlashes = 0;
+                Vector<Integer> indexes = new Vector<>();
                 for (int i = 0; i < currUri.length(); ++i) {
                     if (currUri.charAt(i) == '/') {
+                        if (i != 0) {
+                            indexes.add(i);
+                        }
                         ++numSlashes;
                     }
                 }
-                if (numSlashes == 1) {
-                    userName = currUri.substring(currUri.indexOf("/"));
+                if (numSlashes == 2) {
+                    userName = currUri.substring(currUri.lastIndexOf("/")+1);
                     generationNum = 4;
                 }
-                else if (numSlashes == 2) {
-                    userName = currUri.substring(currUri.indexOf("/"), currUri.lastIndexOf("/"));
-                    generationNum = Integer.parseInt(currUri.substring(currUri.lastIndexOf("/")));
+                else if (numSlashes == 3) {
+                    userName = currUri.substring((indexes.elementAt(0) + 1), (currUri.lastIndexOf("/")));
+                    generationNum = Integer.parseInt(currUri.substring(indexes.elementAt(1)+1));
                 }
                 Gson gson = new Gson();
                 FillService fServe = new FillService();

@@ -1,6 +1,7 @@
 package handler;
 
 import com.google.gson.Gson;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import request.RegisterRequest;
@@ -27,6 +28,9 @@ public class RegisterHandler extends SuperHandler implements HttpHandler {
                 RegisterRequest request = gson.fromJson(data, RegisterRequest.class);
                 RegisterResult result = rServe.registerUser(request);
 
+                String token = result.getAuthtoken();
+                //Headers header = exchange.getRequestHeaders();
+                //header.set("Authorization", token);
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                 OutputStream responseBody = exchange.getResponseBody();
                 String toWrite = gson.toJson(result);

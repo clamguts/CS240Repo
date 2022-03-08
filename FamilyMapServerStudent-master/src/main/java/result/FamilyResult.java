@@ -5,7 +5,17 @@ import model.Person;
 public class FamilyResult {
 
     private Person[] family;
+    private String message;
+
+    public FamilyResult(String message, boolean success) {
+        this.message = message;
+        this.success = success;
+    }
+
     private boolean success;
+
+    public FamilyResult() {}
+
 
     public FamilyResult(Person[] family, boolean success) {
         this.family = family;

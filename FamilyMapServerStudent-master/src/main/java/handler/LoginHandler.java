@@ -1,5 +1,6 @@
 package handler;
 import com.google.gson.Gson;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import request.LoadRequest;
@@ -27,6 +28,9 @@ public class LoginHandler extends SuperHandler implements HttpHandler {
                 LoginRequest log = gson.fromJson(data, LoginRequest.class);
                 LoginResult logRes = logServe.login(log);
 
+                String token = logRes.getAuthtoken();
+                //Headers header = exchange.getRequestHeaders();
+                //header.set("Authorization", token);
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                 OutputStream responseBody = exchange.getResponseBody();
                 String toWrite = gson.toJson(logRes);

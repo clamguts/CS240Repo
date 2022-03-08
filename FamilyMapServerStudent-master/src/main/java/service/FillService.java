@@ -40,14 +40,28 @@ public class FillService {
 
            rootUser = uDAO.find(userName);
 
-           for (Person p : people) {
-               pDAO.insert(p);
+           if (rootUser == null) {
+               throw new DataAccessException("User does not exist in database");
            }
 
+           newTree.generateRoot(userName, generations, events, people, rootUser);
+
+           for (Person p : people) {
+               if (!p.hasSpouse()) {
+                   p.setFirstName(rootUser.getFirstName());
+                   p.setLastName(rootUser.getLastName());
+               }
+               pDAO.insert(p);
+           }
            for (Event e : events) {
                eDAO.insert(e);
            }
            db.closeConnection(true);
+
+           message = "Successfuly added " + events.size() + " events and " + people.size() + " people.";
+           success = true;
+           FillResult result = new FillResult(message, success);
+           return result;
        } catch(DataAccessException d) {
            d.printStackTrace();
            message = "Error: " + d.getMessage();
@@ -59,11 +73,6 @@ public class FillService {
            FillResult result = new FillResult(message, success);
            return result;
        }
-       newTree.generateRoot(userName, generations, events, people, rootUser);
-       message = "Successfuly added " + events.size() + " events and " + people.size() + " people.";
-       success = true;
-       FillResult result = new FillResult(message, success);
-       return result;
     }
 
 }

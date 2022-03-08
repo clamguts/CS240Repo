@@ -3,6 +3,7 @@ package dao;
 import model.Person;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonDAO {
@@ -110,11 +111,41 @@ public class PersonDAO {
     }
 
     /** method gets a person's family members based on their respective ids
-     * @param personID person's id
+     * @param username person's id
      * @return list of people in the person's family
      */
-    public List<Person> getFamily(String personID) {
-        return null;
+    public Person[] getFamily(String username) throws DataAccessException {
+        List<Person> people = new ArrayList<>();
+        Person person;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM person WHERE associatedUsername = ?;";
+        try (PreparedStatement stmt = accessCon.prepareStatement(sql)) {
+            stmt.setString(2, username);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                person = new Person(rs.getString("personID"), rs.getString("associatedUsername"),
+                        rs.getString("firstName"), rs.getString("lastName"), rs.getString("gender"),
+                        rs.getString("fatherID"), rs.getString("motherID"), rs.getString("spouseID"));
+                people.add(person);
+            }
+            if (people.isEmpty()) {
+                return null;
+            }
+            Person[] peopleArray = (Person[]) people.toArray();
+            return peopleArray;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding person");
+        } finally {
+            if(rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
     }
 
     /** removes all people associated with a user

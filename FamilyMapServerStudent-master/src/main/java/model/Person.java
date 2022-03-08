@@ -62,6 +62,27 @@ public class Person {
         this.gender = gender;
     }
 
+    public boolean hasMother() {
+        if (motherID != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasFather() {
+        if (fatherID != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasSpouse() {
+        if (spouseID != null) {
+            return true;
+        }
+        return false;
+    }
+
     public String getPersonID() {
         return personID;
     }

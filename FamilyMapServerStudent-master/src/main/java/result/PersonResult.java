@@ -10,7 +10,18 @@ public class PersonResult {
     private String fatherID;
     private String motherID;
     private String spouseID;
+    private String message;
+
+    public PersonResult(String message, boolean success) {
+        this.message = message;
+        this.success = success;
+    }
+
     private boolean success;
+
+    public PersonResult() {
+        this.success = false;
+    }
 
     /** constructor containing only required fields
      * @param username
@@ -26,6 +37,16 @@ public class PersonResult {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
+        this.success = success;
+    }
+
+    public PersonResult(String username, String personID, String firstName, String lastName, String gender, String spouseID, boolean success) {
+        this.username = username;
+        this.personID = personID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.spouseID = spouseID;
         this.success = success;
     }
 
@@ -49,6 +70,17 @@ public class PersonResult {
         this.fatherID = fatherID;
         this.motherID = motherID;
         this.spouseID = spouseID;
+        this.success = success;
+    }
+
+    public PersonResult(String username, String personID, String firstName, String lastName, String gender, String fatherID, String motherID, boolean success) {
+        this.username = username;
+        this.personID = personID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.fatherID = fatherID;
+        this.motherID = motherID;
         this.success = success;
     }
 
