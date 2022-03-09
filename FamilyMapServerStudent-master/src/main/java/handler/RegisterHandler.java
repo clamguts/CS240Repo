@@ -28,15 +28,17 @@ public class RegisterHandler extends SuperHandler implements HttpHandler {
                 RegisterRequest request = gson.fromJson(data, RegisterRequest.class);
                 RegisterResult result = rServe.registerUser(request);
 
-                String token = result.getAuthtoken();
-                //Headers header = exchange.getRequestHeaders();
-                //header.set("Authorization", token);
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                if (result.isSuccess()) {
+                    success = true;
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                }
+                else {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                }
                 OutputStream responseBody = exchange.getResponseBody();
                 String toWrite = gson.toJson(result);
                 writeString(toWrite, responseBody);
                 exchange.getResponseBody().close();
-                success = true;
             }
             if (!success) {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);

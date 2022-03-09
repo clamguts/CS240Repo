@@ -30,6 +30,8 @@ public class Server {
         server.createContext("/user/register", new RegisterHandler());
         server.createContext("/person/", new PersonHandler());
         server.createContext("/person", new FamilyHandler());
+        server.createContext("/event", new AllEventHandler());
+        server.createContext("/event/", new EventHandler());
         server.start();
     }
 

@@ -47,12 +47,18 @@ public class FillHandler extends SuperHandler implements HttpHandler {
                 FillRequest fillRequest = new FillRequest(userName, generationNum);
                 FillResult result = fServe.fill(fillRequest);
 
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                if (result.isSuccess()) {
+                    success = true;
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                }
+                else {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                }
+
                 OutputStream responseBody = exchange.getResponseBody();
                 String toWrite = gson.toJson(result);
                 writeString(toWrite, responseBody);
                 exchange.getResponseBody().close();
-                success = true;
             }
             if (!success) {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);

@@ -4,16 +4,14 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import result.FamilyResult;
-import result.PersonResult;
-import service.FamilySerivce;
-import service.PersonService;
+import result.EventResult;
+import service.EventService;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 
-public class FamilyHandler extends SuperHandler implements HttpHandler {
+public class EventHandler extends SuperHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
@@ -23,9 +21,11 @@ public class FamilyHandler extends SuperHandler implements HttpHandler {
                 Headers header = exchange.getRequestHeaders();
                 if (header.containsKey("Authorization")) {
                     String token = header.getFirst("Authorization");
+                    String ID = exchange.getRequestURI().toString();
+                    String eventID = ID.substring(ID.lastIndexOf("/")+1);
 
-                    FamilySerivce famServe = new FamilySerivce();
-                    FamilyResult result = famServe.family(token);
+                    EventService eServe = new EventService();
+                    EventResult result = eServe.event(token, eventID);
 
                     Gson gson = new Gson();
 

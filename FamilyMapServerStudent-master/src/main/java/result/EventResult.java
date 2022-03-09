@@ -7,11 +7,20 @@ public class EventResult {
     private String personID;
     private float latitude;
     private float longitude;
+
+    public EventResult(String message, boolean success) {
+        this.message = message;
+        this.success = success;
+    }
+
     private String country;
     private String city;
     private String eventType;
     private int year;
+    private String message;
     private boolean success;
+
+    public EventResult() {}
 
     public EventResult(String username, String eventID, String personID, float latitude, float longitude, String country, String city, String eventType, int year, boolean success) {
         this.username = username;

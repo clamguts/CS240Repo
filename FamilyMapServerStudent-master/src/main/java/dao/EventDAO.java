@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.Types;
 
@@ -121,8 +122,34 @@ public class EventDAO {
      * @param username the string representing the user's username
      * @return list of user's events
      */
-    public List<Event> getUserEvents(String username) {
-        return null;
+    public List<Event> getUserEvents(String username) throws DataAccessException {
+        List<Event> events = new ArrayList<>();
+        Event event;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM event WHERE associatedUsername = ?";
+        try (PreparedStatement stmt = accessCon.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                event = new Event(rs.getString("eventID"), rs.getString("associatedUsername"),
+                        rs.getString("personID"), rs.getFloat("latitude"), rs.getFloat("longitude"),
+                        rs.getString("country"), rs.getString("city"), rs.getString("eventType"),
+                        rs.getInt("year"));
+                events.add(event);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding event");
+        } finally {
+            if(rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return events;
     }
 
     /** method gets the events for a given person in the tree

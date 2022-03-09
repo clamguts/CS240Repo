@@ -32,6 +32,12 @@ public class LoginService {
 
             UserDAO userDAO = new UserDAO(connect);
             User currUser = userDAO.find(uName);
+            if (currUser == null) {
+                throw new DataAccessException("User not found in database");
+            }
+            else if (!(currUser.getPassword()).equals(log.getPassword())) {
+                throw new DataAccessException("Entered invalid password");
+            }
             String pID = currUser.getPersonID();
 
             success = true;

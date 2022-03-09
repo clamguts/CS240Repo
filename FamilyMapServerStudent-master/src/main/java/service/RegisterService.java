@@ -66,12 +66,21 @@ public class RegisterService {
             PersonDAO personDAO = new PersonDAO(connection);
 
             for (Event e : events) {
+                if (e.getYear() == 1700) {
+                    e.setPersonId(newUser.getPersonID());
+                }
                 eventDAO.insert(e);
             }
 
             for (Person p : people) {
+                if (!p.hasSpouse()) {
+                    p.setFirstName(newUser.getFirstName());
+                    p.setLastName(newUser.getLastName());
+                    p.setPersonID(newUser.getPersonID());
+                }
                 personDAO.insert(p);
             }
+
             db.closeConnection(true);
         } catch (DataAccessException d) {
             d.printStackTrace();

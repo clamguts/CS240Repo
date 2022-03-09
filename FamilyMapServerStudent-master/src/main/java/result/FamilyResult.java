@@ -4,7 +4,7 @@ import model.Person;
 
 public class FamilyResult {
 
-    private Person[] family;
+    private Person[] data;
     private String message;
 
     public FamilyResult(String message, boolean success) {
@@ -17,17 +17,17 @@ public class FamilyResult {
     public FamilyResult() {}
 
 
-    public FamilyResult(Person[] family, boolean success) {
-        this.family = family;
+    public FamilyResult(Person[] data, boolean success) {
+        this.data = data;
         this.success = success;
     }
 
     public Person[] getFamily() {
-        return family;
+        return data;
     }
 
-    public void setFamily(Person[] family) {
-        this.family = family;
+    public void setFamily(Person[] data) {
+        this.data = data;
     }
 
     public boolean isSuccess() {

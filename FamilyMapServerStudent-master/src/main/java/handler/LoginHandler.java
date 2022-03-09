@@ -28,16 +28,18 @@ public class LoginHandler extends SuperHandler implements HttpHandler {
                 LoginRequest log = gson.fromJson(data, LoginRequest.class);
                 LoginResult logRes = logServe.login(log);
 
-                String token = logRes.getAuthtoken();
-                //Headers header = exchange.getRequestHeaders();
-                //header.set("Authorization", token);
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                if (logRes.isSuccess()) {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                    success = true;
+                }
+                else {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                }
                 OutputStream responseBody = exchange.getResponseBody();
                 String toWrite = gson.toJson(logRes);
                 writeString(toWrite, responseBody);
-
                 exchange.getResponseBody().close();
-                success = true;
+
             }
             if (!success) {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);

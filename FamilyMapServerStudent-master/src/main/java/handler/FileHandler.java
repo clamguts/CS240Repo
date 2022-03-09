@@ -17,6 +17,7 @@ public class FileHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         boolean success = false;
+        boolean notFound = false;
         try {
             if (exchange.getRequestMethod().equalsIgnoreCase("get")) {
                 String url = exchange.getRequestURI().toString();
@@ -32,12 +33,18 @@ public class FileHandler implements HttpHandler {
                     body.close();
                     success = true;
                 }
+                else {
+                    notFound = true;
+                    url = "web/html/404.html";
+                    currFile = new File(url);
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
+                    OutputStream body = exchange.getResponseBody();
+                    Files.copy(currFile.toPath(), body);
+                    body.close();
+                    exchange.getResponseBody().close();
+                }
             }
-            else {
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
-                exchange.getResponseBody().close();
-            }
-            if (!success) {
+            if (!success && !notFound) {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                 exchange.getResponseBody().close();
             }

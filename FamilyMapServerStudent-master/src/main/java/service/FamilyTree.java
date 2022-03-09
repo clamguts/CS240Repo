@@ -1,14 +1,12 @@
 package service;
 
 import com.google.gson.Gson;
-import handler.JsonFileReader;
 import model.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.Random;
-import java.util.Set;
 import java.util.UUID;
 import model.NamesArray;
 import java.util.Vector;

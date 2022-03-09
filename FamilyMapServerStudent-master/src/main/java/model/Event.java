@@ -14,9 +14,6 @@ public class Event {
     private int year;
 
     public Event() {
-        this.latitude = 0;
-        this.longitude = 0;
-        this.year = 0;
 
     }
 

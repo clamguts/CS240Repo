@@ -6,6 +6,7 @@ import dao.Database;
 import dao.PersonDAO;
 import model.AuthToken;
 import model.Person;
+import java.util.List;
 import request.FamilyRequest;
 import result.FamilyResult;
 import result.PersonResult;
@@ -34,10 +35,12 @@ public class FamilySerivce {
             String userName = aToken.getUsername();
 
             PersonDAO pDAO = new PersonDAO(connection);
-            Person[] people = pDAO.getFamily(userName);
+            List<Person> people = pDAO.getFamily(userName);
+            Person[] personArray = new Person[people.size()];
+            personArray = people.toArray(personArray);
             db.closeConnection(true);
             success = true;
-            result = new FamilyResult(people, success);
+            result = new FamilyResult(personArray, success);
             return result;
         } catch(DataAccessException d) {
             d.printStackTrace();

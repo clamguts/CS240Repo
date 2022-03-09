@@ -1,15 +1,11 @@
 package service;
 
 import dao.*;
-import handler.JsonFileReader;
-import model.LocationArray;
 import request.FillRequest;
 import result.FillResult;
 import model.Person;
 import model.User;
 import model.Event;
-import result.LoginResult;
-import model.Location;
 
 import java.util.*;
 import java.sql.Connection;
@@ -50,10 +46,14 @@ public class FillService {
                if (!p.hasSpouse()) {
                    p.setFirstName(rootUser.getFirstName());
                    p.setLastName(rootUser.getLastName());
+                   p.setPersonID(rootUser.getPersonID());
                }
                pDAO.insert(p);
            }
            for (Event e : events) {
+               if (e.getYear() == 1700) {
+                   e.setPersonId(rootUser.getPersonID());
+               }
                eDAO.insert(e);
            }
            db.closeConnection(true);

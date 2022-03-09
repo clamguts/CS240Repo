@@ -114,13 +114,13 @@ public class PersonDAO {
      * @param username person's id
      * @return list of people in the person's family
      */
-    public Person[] getFamily(String username) throws DataAccessException {
+    public List<Person> getFamily(String username) throws DataAccessException {
         List<Person> people = new ArrayList<>();
         Person person;
         ResultSet rs = null;
-        String sql = "SELECT * FROM person WHERE associatedUsername = ?;";
+        String sql = "SELECT * FROM person WHERE associatedUsername = ?";
         try (PreparedStatement stmt = accessCon.prepareStatement(sql)) {
-            stmt.setString(2, username);
+            stmt.setString(1, username);
             rs = stmt.executeQuery();
             while (rs.next()) {
                 person = new Person(rs.getString("personID"), rs.getString("associatedUsername"),
@@ -128,24 +128,19 @@ public class PersonDAO {
                         rs.getString("fatherID"), rs.getString("motherID"), rs.getString("spouseID"));
                 people.add(person);
             }
-            if (people.isEmpty()) {
-                return null;
-            }
-            Person[] peopleArray = (Person[]) people.toArray();
-            return peopleArray;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DataAccessException("Error encountered while finding person");
         } finally {
-            if(rs != null) {
+            if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
-
         }
+        return people;
     }
 
     /** removes all people associated with a user

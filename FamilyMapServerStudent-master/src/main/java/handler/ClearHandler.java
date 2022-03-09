@@ -27,15 +27,17 @@ public class ClearHandler extends SuperHandler implements HttpHandler {
 
                ClearResult result = cServive.clear();
 
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                if (result.isSuccess()) {
+                    success = true;
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                }
+                else {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                }
 
                 OutputStream body = exchange.getResponseBody();
-
                 writeString(gson.toJson(result), body);
-
                 exchange.getResponseBody().close();
-
-                success = true;
             }
             if (!success) {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);

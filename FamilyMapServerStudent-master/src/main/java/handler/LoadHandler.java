@@ -29,15 +29,17 @@ public class LoadHandler extends SuperHandler implements HttpHandler {
 
                 LoadResult loadResult = lServe.load(loadRequest);
 
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                if (loadResult.isSuccess()) {
+                    success = true;
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                }
+                else {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                }
 
                 OutputStream responseBody = exchange.getResponseBody();
-
                 writeString(gson.toJson(loadResult), responseBody);
-
                 exchange.getResponseBody().close();
-
-                success = true;
             }
             if (!success) {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);

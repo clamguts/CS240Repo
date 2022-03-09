@@ -5,7 +5,16 @@ import model.Event;
 public class AllEventResult {
 
     private Event[] data;
+    private String message;
+
+    public AllEventResult(String message, boolean success) {
+        this.message = message;
+        this.success = success;
+    }
+
     private boolean success;
+
+    public AllEventResult() {}
 
     public AllEventResult(Event[] data, boolean success) {
         this.data = data;
