@@ -35,10 +35,10 @@ public class PersonService {
             if (person == null) {
                 throw new DataAccessException("Person with specified id not found in database");
             }
-            db.closeConnection(true);
             if (!userName.equals(person.getAssociatedUsername())) {
                 throw new DataAccessException("Authtoken not associated with username");
             }
+            db.closeConnection(true);
             String firstName = person.getFirstName();
             String lastName = person.getLastName();
             String gender = person.getGender();
