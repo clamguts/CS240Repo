@@ -73,24 +73,12 @@ public class PersonDAO {
     }
 
     /** this method removes a person from the database table
-     * @param person person to be removed
+     * @param username person to be removed
      */
-    public void remove(Person person) throws DataAccessException {
-        String sqlString = "DELETE FROM person WHERE personID = " + person.getPersonID();
+    public void remove(String username) throws DataAccessException {
+        String sqlString = "DELETE FROM person WHERE associatedUsername = \'" + username + "\'";
 
         try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
-            //Using the statements built-in set(type) functions we can pick the question mark we want
-            //to fill in and give it a proper value. The first argument corresponds to the first
-            //question mark found in our sql String
-            stmt.setNull(1, Types.VARCHAR);
-            stmt.setNull(2, Types.VARCHAR);
-            stmt.setNull(3, Types.VARCHAR);
-            stmt.setNull(4, Types.VARCHAR);
-            stmt.setNull(5, Types.VARCHAR);
-            stmt.setNull(6, Types.VARCHAR);
-            stmt.setNull(7, Types.VARCHAR);
-            stmt.setNull(8, Types.VARCHAR);
-
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new DataAccessException("Error encountered while removing from the database");
@@ -99,9 +87,6 @@ public class PersonDAO {
 
     public void clearPeople() throws DataAccessException {
         String sqlString = "DELETE FROM person";
-        if (accessCon == null) {
-            return;
-        }
         try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
             stmt.executeUpdate();
         }

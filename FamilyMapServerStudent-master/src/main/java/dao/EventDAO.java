@@ -80,25 +80,12 @@ public class EventDAO {
     }
 
     /** this method removes an event from the database table
-     * @param event event to be removed
+     * @param username event to be removed
      */
-    public void remove(Event event) throws DataAccessException {
-        String sqlString = "DELETE FROM event WHERE eventID = " + event.getEventID();
+    public void remove(String username) throws DataAccessException {
+        String sqlString = "DELETE FROM event WHERE associatedUsername = \'" + username + "\'";
 
         try (PreparedStatement stmt = accessCon.prepareStatement(sqlString)) {
-            //Using the statements built-in set(type) functions we can pick the question mark we want
-            //to fill in and give it a proper value. The first argument corresponds to the first
-            //question mark found in our sql String
-            stmt.setNull(1, Types.VARCHAR);
-            stmt.setNull(2, Types.VARCHAR);
-            stmt.setNull(3, Types.VARCHAR);
-            stmt.setNull(4, Types.FLOAT);
-            stmt.setNull(5, Types.FLOAT);
-            stmt.setNull(6, Types.VARCHAR);
-            stmt.setNull(7, Types.VARCHAR);
-            stmt.setNull(8, Types.VARCHAR);
-            stmt.setNull(9, Types.INTEGER);
-
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new DataAccessException("Error encountered while removing from the database");

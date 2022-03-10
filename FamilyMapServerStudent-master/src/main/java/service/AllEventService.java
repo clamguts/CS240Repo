@@ -23,6 +23,7 @@ public class AllEventService {
         AllEventResult result = new AllEventResult();
         Database db = new Database();
         try {
+            //open
             Connection connection = db.openConnection();
 
             AuthTokenDAO aDAO = new AuthTokenDAO(connection);
@@ -36,6 +37,7 @@ public class AllEventService {
             List<Event> events = eDAO.getUserEvents(userName);
             Event[] eventArray = new Event[events.size()];
             eventArray = events.toArray(eventArray);
+            //close
             db.closeConnection(true);
             success = true;
             result = new AllEventResult(eventArray, success);
@@ -44,8 +46,10 @@ public class AllEventService {
             d.printStackTrace();
             message = "Error: " + d.getMessage();
             try {
+                //close
                 db.closeConnection(false);
             } catch (DataAccessException e) {
+                System.out.println("no close allevent");
                 e.printStackTrace();
             }
             result = new AllEventResult(message, success);

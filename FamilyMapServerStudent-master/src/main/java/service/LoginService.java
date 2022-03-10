@@ -51,6 +51,7 @@ public class LoginService {
             try {
                 db.closeConnection(false);
             } catch (DataAccessException e) {
+                System.out.println("No close login");
                 e.printStackTrace();
             }
             LoginResult logR = new LoginResult(message, success);

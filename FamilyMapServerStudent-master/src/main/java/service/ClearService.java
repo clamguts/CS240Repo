@@ -16,6 +16,7 @@ public class ClearService {
         boolean success = false;
 
         try {
+            //open
             Connection connection = db.openConnection();
             UserDAO uDAO = new UserDAO(connection);
             EventDAO eDAO = new EventDAO(connection);
@@ -27,6 +28,7 @@ public class ClearService {
             uDAO.clearUsers();
             aDAO.clearTokens();
 
+            //close
             db.closeConnection(true);
 
             respMessage = "Clear succeeded.";
@@ -36,8 +38,12 @@ public class ClearService {
         catch (DataAccessException d) {
             d.printStackTrace();
             respMessage = "Error: " + d.getMessage();
-            success = false;
-            db.closeConnection(false);
+            try {
+                db.closeConnection(false);
+            } catch (DataAccessException e) {
+                System.out.println("No close clear");
+                e.printStackTrace();
+            }
         }
 
         ClearResult clearResult = new ClearResult(respMessage, success);

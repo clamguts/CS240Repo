@@ -88,6 +88,7 @@ public class RegisterService {
             try {
                 db.closeConnection(false);
             } catch (DataAccessException e) {
+                System.out.println("No close register");
                 e.printStackTrace();
             }
             RegisterResult result = new RegisterResult(message, success);

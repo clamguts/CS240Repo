@@ -16,19 +16,24 @@ public class EventService {
         Database db = new Database();
         EventResult result = new EventResult();
         try {
+            //open
             Connection connection = db.openConnection();
             EventDAO eDAO = new EventDAO(connection);
             AuthTokenDAO aDAO = new AuthTokenDAO(connection);
             AuthToken a = aDAO.find(token);
+            if (a == null) {
+                throw new DataAccessException("Authtoken invalid");
+            }
             String userName = a.getUsername();
             Event event = eDAO.find(eventID);
             if (event == null) {
                 throw new DataAccessException("Person with specified id not found in database");
             }
-            db.closeConnection(true);
             if (!userName.equals(event.getAssociateUserName())) {
                 throw new DataAccessException("Authtoken not associated with username");
             }
+            //close
+            db.closeConnection(true);
             String personID = event.getPersonId();
             float latitude = event.getLatitude();
             float longitude = event.getLongitude();
@@ -43,6 +48,7 @@ public class EventService {
             d.printStackTrace();
             message = "Error: " + d.getMessage();
             try {
+                System.out.println("No close event");
                 db.closeConnection(false);
             } catch (DataAccessException e) {
                 e.printStackTrace();

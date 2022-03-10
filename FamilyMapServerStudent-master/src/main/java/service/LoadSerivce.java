@@ -60,6 +60,7 @@ public class LoadSerivce {
             try {
                 db.closeConnection(false);
             } catch (DataAccessException e) {
+                System.out.println("No close load");
                 e.printStackTrace();
             }
             LoadResult loadR = new LoadResult(respMessage, success);

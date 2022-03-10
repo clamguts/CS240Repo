@@ -27,6 +27,9 @@ public class PersonService {
             PersonDAO pDAO = new PersonDAO(connection);
             AuthTokenDAO aDAO = new AuthTokenDAO(connection);
             AuthToken a = aDAO.find(token);
+            if (a == null) {
+                throw new DataAccessException("Authtoken invalid");
+            }
             String userName = a.getUsername();
             Person person = pDAO.find(pID);
             if (person == null) {
@@ -73,6 +76,7 @@ public class PersonService {
             try {
                 db.closeConnection(false);
             } catch (DataAccessException e) {
+                System.out.println("No close person");
                 e.printStackTrace();
             }
             result = new PersonResult(message, success);

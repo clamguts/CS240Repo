@@ -17,7 +17,6 @@ public class FillService {
      * @return the result of that request
      */
    public FillResult fill(FillRequest fRequest) {
-    //clear database of everything associated with user
         String userName = fRequest.getUsername();
         int generations = fRequest.getGenerations();
         FamilyTree newTree = new FamilyTree();
@@ -28,6 +27,7 @@ public class FillService {
         User rootUser = new User();
        Database db = new Database();
        try {
+           //open
            Connection connect = db.openConnection();
 
            UserDAO uDAO = new UserDAO(connect);
@@ -39,6 +39,9 @@ public class FillService {
            if (rootUser == null) {
                throw new DataAccessException("User does not exist in database");
            }
+
+           pDAO.remove(userName);
+           eDAO.remove(userName);
 
            newTree.generateRoot(userName, generations, events, people, rootUser);
 
@@ -56,9 +59,10 @@ public class FillService {
                }
                eDAO.insert(e);
            }
+           //close
            db.closeConnection(true);
 
-           message = "Successfuly added " + events.size() + " events and " + people.size() + " people.";
+           message = "Successfully added " + people.size() + " persons and " + events.size() + " events.";
            success = true;
            FillResult result = new FillResult(message, success);
            return result;
@@ -66,8 +70,10 @@ public class FillService {
            d.printStackTrace();
            message = "Error: " + d.getMessage();
            try {
+               //close
                db.closeConnection(false);
            } catch (DataAccessException e) {
+               System.out.println("No close fill");
                e.printStackTrace();
            }
            FillResult result = new FillResult(message, success);

@@ -25,6 +25,7 @@ public class FamilySerivce {
         FamilyResult result = new FamilyResult();
         Database db = new Database();
         try {
+            //open
             Connection connection = db.openConnection();
 
             AuthTokenDAO aDAO = new AuthTokenDAO(connection);
@@ -38,6 +39,7 @@ public class FamilySerivce {
             List<Person> people = pDAO.getFamily(userName);
             Person[] personArray = new Person[people.size()];
             personArray = people.toArray(personArray);
+            //close
             db.closeConnection(true);
             success = true;
             result = new FamilyResult(personArray, success);
@@ -46,6 +48,7 @@ public class FamilySerivce {
             d.printStackTrace();
             message = "Error: " + d.getMessage();
             try {
+                System.out.println("No close family");
                 db.closeConnection(false);
             } catch (DataAccessException e) {
                 e.printStackTrace();
