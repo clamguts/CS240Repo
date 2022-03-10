@@ -40,17 +40,12 @@ public class LoadSerivce {
             for (Person p : l.getPersons()) {
                 pDAO.insert(p);
             }
+            db.closeConnection(true);
 
-            Integer personLength = l.getPersons().length;
-            Integer eventLength = l.getEvents().length;
-            Integer userLength = l.getUsers().length;
-
-            respMessage = "Successfully added " + personLength.toString(l.getPersons().length) + " people, " +
-            eventLength.toString(l.getEvents().length) + " events, " + userLength.toString(l.getUsers().length)
-            + " users.";
+            respMessage = "Successfully added " + l.getUsers().length + " users, " +
+            l.getPersons().length + " persons, and " + l.getEvents().length + "events to the database.";
             success = true;
             LoadResult loadR = new LoadResult(respMessage, success);
-            db.closeConnection(true);
             return loadR;
         }
         catch (DataAccessException d) {

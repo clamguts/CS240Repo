@@ -2,7 +2,7 @@ package result;
 
 public class PersonResult {
 
-    private String username;
+    private String associatedUsername;
     private String personID;
     private String firstName;
     private String lastName;
@@ -32,7 +32,7 @@ public class PersonResult {
      * @param success
      */
     public PersonResult(String username, String personID, String firstName, String lastName, String gender, boolean success) {
-        this.username = username;
+        this.associatedUsername = username;
         this.personID = personID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,7 +41,7 @@ public class PersonResult {
     }
 
     public PersonResult(String username, String personID, String firstName, String lastName, String gender, String spouseID, boolean success) {
-        this.username = username;
+        this.associatedUsername = username;
         this.personID = personID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -62,7 +62,7 @@ public class PersonResult {
      * @param success
      */
     public PersonResult(String username, String personID, String firstName, String lastName, String gender, String fatherID, String motherID, String spouseID, boolean success) {
-        this.username = username;
+        this.associatedUsername = username;
         this.personID = personID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -74,7 +74,7 @@ public class PersonResult {
     }
 
     public PersonResult(String username, String personID, String firstName, String lastName, String gender, String fatherID, String motherID, boolean success) {
-        this.username = username;
+        this.associatedUsername = username;
         this.personID = personID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -85,11 +85,11 @@ public class PersonResult {
     }
 
     public String getUsername() {
-        return username;
+        return associatedUsername;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.associatedUsername = username;
     }
 
     public String getPersonID() {

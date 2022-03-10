@@ -2,7 +2,7 @@ package result;
 
 public class EventResult {
 
-    private String username;
+    private String associatedUsername;
     private String eventID;
     private String personID;
     private float latitude;
@@ -23,7 +23,7 @@ public class EventResult {
     public EventResult() {}
 
     public EventResult(String username, String eventID, String personID, float latitude, float longitude, String country, String city, String eventType, int year, boolean success) {
-        this.username = username;
+        this.associatedUsername = username;
         this.eventID = eventID;
         this.personID = personID;
         this.latitude = latitude;
@@ -36,11 +36,11 @@ public class EventResult {
     }
 
     public String getUsername() {
-        return username;
+        return associatedUsername;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.associatedUsername = username;
     }
 
     public String getEventID() {
