@@ -96,6 +96,10 @@ public class PersonResult {
         return personID;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
     public void setPersonID(String personID) {
         this.personID = personID;
     }

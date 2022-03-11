@@ -79,4 +79,5 @@ public class UserDAOTest {
         uDao.clearUsers();
         assertNull(uDao.find(newUser.getUsername()));
     }
+
 }

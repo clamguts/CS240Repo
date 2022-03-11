@@ -23,10 +23,8 @@ public class PersonDAOTest {
         newPerson = new Person("pID", "aUName", "first", "last", "g");
 
         Connection conn = db.getConnection();
-        if (pDao != null) {
-            pDao.clearPeople();
-        }
         pDao = new PersonDAO(conn);
+        pDao.clearPeople();
     }
 
     @AfterEach
@@ -77,5 +75,28 @@ public class PersonDAOTest {
         pDao.insert(newPerson);
         pDao.clearPeople();
         assertNull(pDao.find(newPerson.getPersonID()));
+    }
+
+    @Test
+    public void removePass() throws DataAccessException {
+        pDao.insert(newPerson);
+        Person otherPerson = new Person("p", "a", "f", "l", "g");
+        pDao.insert(otherPerson);
+
+        pDao.remove(otherPerson.getAssociatedUsername());
+        assertNull(pDao.find(otherPerson.getPersonID()));
+        Person findPerson = pDao.find(newPerson.getPersonID());
+        assertNotNull(findPerson);
+        assertEquals(newPerson, findPerson);
+    }
+
+    @Test
+    public void removeFail() throws DataAccessException {
+        pDao.insert(newPerson);
+        pDao.remove(newPerson.getPersonID());
+
+        Person findPerson = pDao.find(newPerson.getPersonID());
+        assertNotNull(findPerson);
+        assertEquals(newPerson, findPerson);
     }
 }

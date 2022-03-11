@@ -31,6 +31,10 @@ public class LoadSerivce {
             eDAO.clearEvents();
             pDAO.clearPeople();
 
+            if (l.getUsers() == null || l.getEvents() == null || l.getPersons() == null) {
+                throw new DataAccessException("Nothing to load");
+            }
+
             for (User u : l.getUsers()) {
                 uDAO.insert(u);
             }

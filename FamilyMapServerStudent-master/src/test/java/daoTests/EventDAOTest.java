@@ -4,6 +4,7 @@ import dao.DataAccessException;
 import dao.Database;
 import dao.EventDAO;
 import model.Event;
+import model.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -98,5 +99,29 @@ public class EventDAOTest {
         eDao.clearEvents();
         assertNull(eDao.find(bestEvent.getEventID()));
     }
+
+    @Test
+    public void removePass() throws DataAccessException {
+        eDao.insert(bestEvent);
+        Event otherEvent = new Event("e", "a", "p", 0, 0, "c", "ci", "et", 1970);
+        eDao.insert(otherEvent);
+
+        eDao.remove(otherEvent.getAssociateUserName());
+        assertNull(eDao.find(otherEvent.getEventID()));
+        Event findEvent = eDao.find(bestEvent.getEventID());
+        assertNotNull(findEvent);
+        assertEquals(bestEvent, findEvent);
+    }
+
+    @Test
+    public void removeFail() throws DataAccessException {
+        eDao.insert(bestEvent);
+        eDao.remove(bestEvent.getEventID());
+
+        Event findEvent = eDao.find(bestEvent.getEventID());
+        assertNotNull(findEvent);
+        assertEquals(bestEvent, findEvent);
+    }
+
 }
 
